@@ -1,4 +1,3 @@
-import { CurrencyRupee } from "@mui/icons-material";
 import {
   Button,
   List,
@@ -17,6 +16,7 @@ import { BuyResult } from "@types";
 import { apiClient } from "@api";
 import { ShowErrors, UserContext } from "@components";
 import { UploadedProductImage } from "./UploadedProductImage";
+import { ProductPrice } from "./ProductPrice";
 
 type Props = {
   products: Product[];
@@ -77,15 +77,10 @@ export const ProductList = ({ products, setProducts, onBuy }: Props) => {
                         ({product.amountAvailable})
                       </Typography>
                     </Typography>
-                    <Typography
-                      fontSize={25}
-                      fontWeight="700"
-                      color="secondary"
-                      display="flex"
-                    >
-                      <CurrencyRupee fontSize="large" />
-                      {`${product.cost / 100}`}
-                    </Typography>
+                    <ProductPrice
+                      product={product}
+                      isOwner={product.sellerId === user?.id}
+                    />
                     <UploadedProductImage url={product.productImage} />
                   </>
                 }
