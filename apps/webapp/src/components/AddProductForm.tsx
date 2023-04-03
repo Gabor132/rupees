@@ -5,14 +5,16 @@ import {
   Stack,
   TextField,
   Typography,
+  Input,
 } from "@mui/material";
 import { AxiosError } from "axios";
 import { Product } from "database";
 import * as React from "react";
 
-import { BuyResult } from "@types";
+import { BuyResult, ImageUploadResult } from "@types";
 import { apiClient } from "@api";
 import { NumberFormatCustom, ShowErrors } from "@components";
+import { ProductImage } from "./ProductImage";
 
 type Props = {
   onAdd: () => {};
@@ -22,6 +24,43 @@ export const AddProductForm = ({ onAdd }: Props) => {
   const [newProduct, setNewProduct] = React.useState<Partial<Product>>();
 
   const [error, setError] = React.useState<AxiosError>();
+
+  const [uploadedFile, setUploadedFile] = React.useState<Blob | null>(null);
+  const [url, setUrl] = React.useState<string | null>(null);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.value) {
+      const image = event.target.files[0];
+      setUploadedFile(image);
+      setUrl(URL.createObjectURL(image));
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      if (uploadedFile) {
+        const body = new FormData();
+        body.append("file", uploadedFile);
+        await apiClient
+          .post<ImageUploadResult>("/products/image/upload", body, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            return apiClient.post<BuyResult>("/products", {
+              ...newProduct,
+              productImage: response.data.filename,
+            });
+          });
+      } else {
+        await apiClient.post<BuyResult>("/products", newProduct);
+      }
+      onAdd();
+    } catch (e) {
+      setError(e as AxiosError);
+    }
+  };
 
   return (
     <Box sx={{ width: "300px" }}>
@@ -72,17 +111,12 @@ export const AddProductForm = ({ onAdd }: Props) => {
           />
         </FormControl>
 
-        <Button
-          onClick={async () => {
-            try {
-              await apiClient.post<BuyResult>("/products", newProduct);
-              onAdd();
-            } catch (e) {
-              setError(e as AxiosError);
-            }
-          }}
-          variant="outlined"
-        >
+        <FormControl>
+          <ProductImage url={url} />
+          <Input type="file" onChange={handleChange} />
+        </FormControl>
+
+        <Button onClick={handleSubmit} variant="outlined">
           submit
         </Button>
       </Stack>
