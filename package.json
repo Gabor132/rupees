@@ -15,7 +15,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "test": "turbo run test",
     "postinstall": "yarn workspace database prisma db push",
-    "clean": "yarn workspace database prisma migrate reset && git clean -fdx"
+    "cleandb": "yarn workspace database prisma migrate reset",
+    "redodb": "yarn run cleandb && yarn run postinstall"
   },
   "devDependencies": {
     "eslint-config-custom": "*",
