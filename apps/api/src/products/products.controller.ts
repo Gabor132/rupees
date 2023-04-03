@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Req,
   UploadedFile,
   UseGuards,
@@ -24,6 +25,7 @@ import {
   ParseFilePipe,
 } from "@nestjs/common/pipes";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { UpdateProductDto } from "./dto/update-product.dto";
 
 type RequestWithUser = Request & { user: User };
 
@@ -51,6 +53,15 @@ export class ProductsController {
   @UseGuards(LoggedInGuard)
   findOne(@Param("id") id: string) {
     return this.productsService.findOne(id);
+  }
+
+  @Put()
+  @UseGuards(LoggedInGuard)
+  update(
+    @Body() updateProductDto: UpdateProductDto,
+    @Req() request: RequestWithUser
+  ) {
+    this.productsService.update(updateProductDto, request.user);
   }
 
   @Delete(":id")
