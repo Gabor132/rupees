@@ -5,3 +5,5 @@ export enum ROLE {
 }
 
 export const DEPOSIT_SIZES = [5, 10, 20, 50, 100] as const;
+
+export const API_URL = "http://localhost:3000";
