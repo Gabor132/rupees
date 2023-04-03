@@ -9,6 +9,8 @@ import { PrismaService } from "./prisma.service";
 import { ProductsModule } from "./products/products.module";
 import { ProductsService } from "./products/products.service";
 import { UsersModule } from "./users/users.module";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 
 @Module({
   imports: [
@@ -20,6 +22,9 @@ import { UsersModule } from "./users/users.module";
         ttl: 10,
         limit: 10,
       }),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "..", "images"),
     }),
   ],
   controllers: [AppController],
