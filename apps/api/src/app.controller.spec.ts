@@ -27,12 +27,14 @@ const newProduct1: CreateProductDto = {
   productName: "Whisker",
   amountAvailable: 11,
   cost: 250,
+  productImage: null,
 };
 
 const newProduct2: CreateProductDto = {
   productName: "Broom",
   amountAvailable: 90,
   cost: 23,
+  productImage: null,
 };
 
 const STARTING_DEPOSIT = 5002;
