@@ -10,6 +10,7 @@ const product: CreateProductDto = {
   amountAvailable: 2,
   cost: 100,
   productName: "letter opener",
+  productImage: "sample_product_image",
 };
 
 const user: User = {

@@ -1,5 +1,6 @@
 import {
   IsInt,
+  IsOptional,
   IsString,
   Max,
   MaxLength,
@@ -22,4 +23,10 @@ export class CreateProductDto {
   @MinLength(2)
   @MaxLength(300)
   public productName: string;
+
+  @IsString()
+  @MinLength(0)
+  @MaxLength(300)
+  @IsOptional()
+  productImage: string;
 }
