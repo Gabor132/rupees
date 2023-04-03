@@ -16,6 +16,7 @@ import { ROLE } from "@constants";
 import { BuyResult } from "@types";
 import { apiClient } from "@api";
 import { ShowErrors, UserContext } from "@components";
+import { UploadedProductImage } from "./UploadedProductImage";
 
 type Props = {
   products: Product[];
@@ -85,6 +86,7 @@ export const ProductList = ({ products, setProducts, onBuy }: Props) => {
                       <CurrencyRupee fontSize="large" />
                       {`${product.cost / 100}`}
                     </Typography>
+                    <UploadedProductImage url={product.productImage} />
                   </>
                 }
                 secondary={<span></span>}
